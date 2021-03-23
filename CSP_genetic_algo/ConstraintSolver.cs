@@ -22,10 +22,9 @@ namespace CSP_genetic_algo
         {
             Configuration idealIndividual = null;
             long iteration = 0;
-
-
-            // Repeat the genetic algorithm until we have found a solution or enough time/iteration have passed
-            while (idealIndividual == null && iteration < 10000000000)
+            
+            // Repeat the genetic algorithm until we have found a solution or enough time/iterations have passed
+            while (idealIndividual == null && iteration < 10000)
             {
                 // New population of children
                 Population newPopulation = new Population();
@@ -68,15 +67,15 @@ namespace CSP_genetic_algo
         /*
          * Mutates a trait of the individual based on a given probability
          */
-        private static Configuration MutateIndividual(Configuration child, double probability)
+        private static Configuration MutateIndividual(Configuration individual, double probability)
         {
             Random rng = new Random();
             if (rng.NextDouble() >= probability)
             {
-                child.MutateRandomTrait();
+                individual.MutateRandomTrait();
             }
 
-            return child;
+            return individual;
         }
 
         /*
@@ -85,17 +84,17 @@ namespace CSP_genetic_algo
          * We get a point between the first and last trait of the parents and the traits left of the point including the
          * point are given from parent A to the child and the traits right of the point are given from parent B to the child
          */
-        private static Configuration CrossIndividuals(Configuration a, Configuration b)
+        private static Configuration CrossIndividuals(Configuration parentA, Configuration parentB)
         {
             Random rng = new Random();
             int crossoverPoint = rng.Next(0, 4);
-            return new Configuration(a, b, crossoverPoint);
+            return new Configuration(parentA, parentB, crossoverPoint);
         }
 
         /*
          * Calculates the fitness of any given individual of the CSP
          * Fitness is expressed in how many constraints are fulfilled
-         * The higher the fitness the better a individual fits the goal
+         * The higher the fitness the better an individual fits the goal
          */
         public static int CalculateFitness(Configuration individual)
         {
@@ -130,39 +129,6 @@ namespace CSP_genetic_algo
             {
                 fitness--;
             }
-            
-            /*
-            //Constraint 6
-            if (individual.FourWheel != true)
-            {
-                fitness--;
-            }
-
-            //Constraint 7
-            if (individual.Fuel != 6)
-            {
-                fitness--;
-            }
-
-            //Constraint 8
-            if (individual.Type != Configuration.TypeEnum.City)
-            {
-                fitness--;
-            }
-
-            //Constraint 9
-            if (individual.Skibag != true)
-            {
-                fitness--;
-            }
-
-            //Constraint 10
-            if (individual.Pdc != true)
-            {
-                fitness--;
-            }
-            */
-            
             return fitness;
         }
 
